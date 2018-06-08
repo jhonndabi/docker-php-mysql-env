@@ -1,0 +1,32 @@
+version: "2"
+
+volumes:
+  data:
+
+services:
+  db:
+    image: mysql:5.6
+    volumes:
+      - data:/var/lib/mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: database
+      MYSQL_USER: user
+      MYSQL_PASSWORD: 123456
+      MYSQL_PORT: 3306
+
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+      args:
+        - uid=$UID
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www
+    links:
+      - db

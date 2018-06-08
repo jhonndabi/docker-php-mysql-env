@@ -1,0 +1,6 @@
+#!/bin/bash
+
+export UID
+
+docker-compose up -d php
+docker exec -it --user=$UID $(docker-compose ps -q php | head -1) composer $@
